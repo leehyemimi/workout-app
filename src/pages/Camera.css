@@ -1,0 +1,247 @@
+@import url('https://fonts.googleapis.com/css2?family=Jua&display=swap');
+
+.camera-wrap {
+  min-height: 100vh;
+  background: #f5f5f3;
+  display: flex;
+  flex-direction: column;
+}
+
+.camera-header {
+  background: #fff;
+  border-bottom: 1px solid #e8e8e6;
+  padding: 12px 16px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.back-btn {
+  background: none;
+  border: none;
+  font-size: 14px;
+  color: #3b82f6;
+  cursor: pointer;
+  padding: 4px 0;
+}
+
+.camera-title {
+  font-size: 15px;
+  font-weight: 600;
+  color: #111;
+}
+
+.camera-body {
+  flex: 1;
+  max-width: 480px;
+  margin: 0 auto;
+  width: 100%;
+  padding: 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+
+/* 카메라 박스 */
+.cam-box {
+  position: relative;
+  background: #000;
+  border-radius: 16px;
+  overflow: hidden;
+  aspect-ratio: 4/3;
+  width: 100%;
+}
+
+.cam-video {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: none;
+}
+.cam-video.visible { display: block; }
+
+.cam-preview {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+
+.cam-placeholder {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  color: #666;
+}
+.cam-icon { font-size: 48px; }
+.cam-placeholder p { font-size: 13px; }
+
+/* 타임스탬프 오버레이 */
+.ts-overlay {
+  position: absolute;
+  bottom: 16px;
+  left: 16px;
+  pointer-events: none;
+  text-align: left;
+  text-shadow: 0 1px 8px rgba(0,0,0,0.85);
+  white-space: nowrap;
+}
+
+.ts-time {
+  font-family: 'Jua', sans-serif;
+  font-size: clamp(32px, 10vw, 54px);
+  color: #fff;
+  line-height: 1.1;
+}
+
+.ts-date {
+  font-family: 'Jua', sans-serif;
+  font-size: clamp(14px, 4vw, 20px);
+  color: rgba(255,255,255,0.92);
+  margin-top: 2px;
+}
+
+.ts-photo-index {
+  position: absolute;
+  bottom: 16px;
+  right: 16px;
+  font-family: 'Jua', sans-serif;
+  font-size: clamp(18px, 5vw, 26px);
+  font-weight: 700;
+  color: #fff;
+  text-shadow: 0 1px 8px rgba(0,0,0,0.85);
+  pointer-events: none;
+}
+
+/* 업로드 중 오버레이 */
+.uploading-overlay {
+  position: absolute;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.6);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+  color: #fff;
+  font-size: 14px;
+}
+
+@keyframes spin {
+  to { transform: rotate(360deg); }
+}
+.upload-spinner {
+  width: 36px;
+  height: 36px;
+  border: 3px solid rgba(255,255,255,0.3);
+  border-top-color: #fff;
+  border-radius: 50%;
+  animation: spin 0.8s linear infinite;
+}
+
+/* 완료 화면 */
+.done-screen {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 16px;
+  min-height: 300px;
+}
+
+@keyframes popIn {
+  0% { transform: scale(0.5); opacity: 0; }
+  70% { transform: scale(1.1); }
+  100% { transform: scale(1); opacity: 1; }
+}
+
+.done-icon {
+  width: 72px;
+  height: 72px;
+  border-radius: 50%;
+  background: #22c55e;
+  color: #fff;
+  font-size: 32px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  animation: popIn 0.4s ease;
+}
+
+.done-text {
+  font-size: 20px;
+  font-weight: 700;
+  color: #111;
+}
+
+/* 에러 메시지 */
+.error-msg {
+  background: #fee2e2;
+  color: #dc2626;
+  padding: 10px 14px;
+  border-radius: 10px;
+  font-size: 13px;
+}
+
+/* 버튼 */
+.cam-controls {
+  display: flex;
+  gap: 10px;
+}
+
+.btn-start {
+  flex: 1;
+  padding: 14px;
+  border-radius: 14px;
+  border: none;
+  background: #3b82f6;
+  color: #fff;
+  font-size: 15px;
+  font-weight: 700;
+  cursor: pointer;
+}
+.btn-start:hover { background: #2563eb; }
+
+.btn-capture {
+  flex: 1;
+  padding: 14px;
+  border-radius: 14px;
+  border: none;
+  background: #22c55e;
+  color: #fff;
+  font-size: 15px;
+  font-weight: 700;
+  cursor: pointer;
+}
+.btn-capture:hover { background: #16a34a; }
+
+.btn-upload {
+  flex: 1;
+  padding: 14px;
+  border-radius: 14px;
+  border: none;
+  background: #3b82f6;
+  color: #fff;
+  font-size: 15px;
+  font-weight: 700;
+  cursor: pointer;
+}
+.btn-upload:hover { background: #2563eb; }
+
+.btn-cancel {
+  flex: 0 0 100px;
+  padding: 14px;
+  border-radius: 14px;
+  border: 1px solid #e0e0e0;
+  background: #fff;
+  color: #555;
+  font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
+}
+.btn-cancel:hover { background: #f5f5f5; }
