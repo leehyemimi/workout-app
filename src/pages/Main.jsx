@@ -389,8 +389,10 @@ function Main({ user }) {
 
   // 인증 기간 전체 구독 (벌금 현황용)
   useEffect(() => {
-    let q = query(collection(db, "certifications"), where("createdAt", ">=", appStartDate));
-    if (appEndDate) q = query(collection(db, "certifications"), where("createdAt", ">=", appStartDate), where("createdAt", "<=", appEndDate));
+    const startOfDay = new Date(appStartDate);
+    startOfDay.setHours(0, 0, 0, 0);
+    let q = query(collection(db, "certifications"), where("createdAt", ">=", startOfDay));
+    if (appEndDate) q = query(collection(db, "certifications"), where("createdAt", ">=", startOfDay), where("createdAt", "<=", appEndDate));
     const unsub = onSnapshot(q, (snap) => {
       setAllWeeksCerts(snap.docs.map((d) => ({ id: d.id, ...d.data() })));
     });
@@ -952,7 +954,8 @@ function Main({ user }) {
           <div className="member-list">
             {members.length === 0 && <div className="empty-msg">아직 등록된 멤버가 없어요</div>}
             {members.map((m) => {
-              const done = countUniqueDays(certifications, m.uid, m.certMethod);
+              const weekCerts = allWeeksCerts.filter(c => c.week === weekId);
+              const done = countUniqueDays(weekCerts.length > 0 ? weekCerts : certifications, m.uid, m.certMethod);
               const goal = getGoalForWeek(m, weekId);
               const percent = Math.min(Math.round((done / goal) * 100), 100);
               const success = done >= goal;
