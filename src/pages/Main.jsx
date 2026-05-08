@@ -217,6 +217,8 @@ function Main({ user }) {
   const [adminUid, setAdminUid] = useState(null);
   const [appTitle, setAppTitle] = useState("운동 인증");
   const [titleInput, setTitleInput] = useState("운동 인증");
+  const [inviteCode, setInviteCode] = useState("workout");
+  const [inviteCodeInput, setInviteCodeInput] = useState("workout");
   const [editingName, setEditingName] = useState(false);
   const [nameInput, setNameInput] = useState("");
   const [editingGoal, setEditingGoal] = useState(false);
@@ -280,12 +282,14 @@ function Main({ user }) {
       const userRef = doc(db, "users", user.uid);
       const snap = await getDoc(userRef);
       if (!snap.exists()) {
+        const savedName = localStorage.getItem(`workout-name-${user.uid}`) || "멤버";
         await setDoc(userRef, {
           uid: user.uid,
-          name: user.displayName || "멤버",
+          name: savedName,
           weeklyGoal: 2,
           createdAt: new Date(),
         });
+        setMyName(savedName);
       } else {
         setMyGoal(snap.data().weeklyGoal || 2);
         setMyName(snap.data().name || "");
@@ -315,6 +319,10 @@ function Main({ user }) {
         if (data.title) {
           setAppTitle(data.title);
           setTitleInput(data.title);
+        }
+        if (data.inviteCode) {
+          setInviteCode(data.inviteCode);
+          setInviteCodeInput(data.inviteCode);
         }
         if (data.startDate) {
           const d = data.startDate.toDate();
@@ -994,6 +1002,17 @@ function Main({ user }) {
                   maxLength={20}
                 />
               </div>
+              <div className="settings-row">
+                <span className="settings-label">입장 코드</span>
+                <input
+                  className="date-input"
+                  type="text"
+                  value={inviteCodeInput}
+                  onChange={(e) => setInviteCodeInput(e.target.value)}
+                  placeholder="workout"
+                  maxLength={20}
+                />
+              </div>
               <div className="goal-divider" />
               <div className="settings-row">
                 <span className="settings-label">인증 시작일</span>
@@ -1026,7 +1045,7 @@ function Main({ user }) {
                     if (!startDateInput) return;
                     const newStart = new Date(startDateInput);
                     const newEnd = endDateInput ? new Date(endDateInput) : null;
-                    const data = { startDate: newStart, adminUid, title: titleInput || "운동 인증" };
+                    const data = { startDate: newStart, adminUid, title: titleInput || "운동 인증", inviteCode: inviteCodeInput || "workout" };
                     if (newEnd) data.endDate = newEnd; else data.endDate = null;
                     await setDoc(doc(db, "settings", "global"), data, { merge: true });
                     setGlobalSettingsOpen(false);
