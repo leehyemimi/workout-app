@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { doc, getDoc, setDoc } from "firebase/firestore";
+import { doc, getDoc, setDoc } from "firebase/firestore"; // getDoc used in handleJoinCode & handleCreateRoom
 import { signInAnonymously } from "firebase/auth";
 import { auth, db } from "../firebase";
 import "./Login.css";
@@ -22,11 +22,7 @@ function Login() {
   const [copied, setCopied] = useState(false);
 
   useEffect(() => {
-    const check = async () => {
-      const snap = await getDoc(doc(db, "settings", "global"));
-      setStep(snap.exists() ? "join-code" : "home");
-    };
-    check();
+    setStep("home");
   }, []);
 
   // 방 만들기 - 방 이름 제출
