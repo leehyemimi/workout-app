@@ -219,6 +219,7 @@ function Main({ user }) {
   const [titleInput, setTitleInput] = useState("운동 인증");
   const [inviteCode, setInviteCode] = useState("workout");
   const [inviteCodeInput, setInviteCodeInput] = useState("workout");
+  const [adminCodeInput, setAdminCodeInput] = useState("admin1234");
   const [editingName, setEditingName] = useState(false);
   const [nameInput, setNameInput] = useState("");
   const [editingGoal, setEditingGoal] = useState(false);
@@ -323,6 +324,9 @@ function Main({ user }) {
         if (data.inviteCode) {
           setInviteCode(data.inviteCode);
           setInviteCodeInput(data.inviteCode);
+        }
+        if (data.adminCode) {
+          setAdminCodeInput(data.adminCode);
         }
         if (data.startDate) {
           const d = data.startDate.toDate();
@@ -1013,6 +1017,17 @@ function Main({ user }) {
                   maxLength={20}
                 />
               </div>
+              <div className="settings-row">
+                <span className="settings-label">관리자 코드</span>
+                <input
+                  className="date-input"
+                  type="text"
+                  value={adminCodeInput}
+                  onChange={(e) => setAdminCodeInput(e.target.value)}
+                  placeholder="admin1234"
+                  maxLength={20}
+                />
+              </div>
               <div className="goal-divider" />
               <div className="settings-row">
                 <span className="settings-label">인증 시작일</span>
@@ -1045,7 +1060,7 @@ function Main({ user }) {
                     if (!startDateInput) return;
                     const newStart = new Date(startDateInput);
                     const newEnd = endDateInput ? new Date(endDateInput) : null;
-                    const data = { startDate: newStart, adminUid, title: titleInput || "운동 인증", inviteCode: inviteCodeInput || "workout" };
+                    const data = { startDate: newStart, adminUid, title: titleInput || "운동 인증", inviteCode: inviteCodeInput || "workout", adminCode: adminCodeInput || "admin1234" };
                     if (newEnd) data.endDate = newEnd; else data.endDate = null;
                     await setDoc(doc(db, "settings", "global"), data, { merge: true });
                     setGlobalSettingsOpen(false);
