@@ -1,6 +1,6 @@
 import { useState, useRef, useEffect } from "react";
 import { ref } from "firebase/storage";
-import { collection, addDoc, updateDoc, doc, serverTimestamp } from "firebase/firestore";
+import { collection, addDoc, updateDoc, doc, Timestamp } from "firebase/firestore";
 import { storage, db } from "../firebase";
 import "./Camera.css";
 
@@ -146,7 +146,7 @@ function Camera({ user, userName, editingCert, certMethod = 1, photoIndex = null
         await updateDoc(doc(db, "certifications", editingCert.id), {
           imageUrl,
           storagePath: fileName,
-          createdAt: serverTimestamp(),
+          createdAt: Timestamp.fromDate(new Date()),
         });
         if (editingCert.storagePath) {
           const { deleteObject, ref: storageRef } = await import("firebase/storage");
@@ -159,7 +159,7 @@ function Camera({ user, userName, editingCert, certMethod = 1, photoIndex = null
           imageUrl,
           storagePath: fileName,
           week: getWeekId(),
-          createdAt: serverTimestamp(),
+          createdAt: Timestamp.fromDate(new Date()),
         });
       }
 
