@@ -923,9 +923,9 @@ function Main({ user }) {
                     <div key={i} className="day-cert-item">
                       <div className="day-cert-thumb-wrap" onClick={() => setModalImg(c.imageUrl)}>
                         <img src={c.imageUrl} alt={member?.name || ""} className="day-cert-thumb" />
-                        {c.uid === user.uid && (
+                        {(c.uid === user.uid || adminUid === user.uid) && (
                           <>
-                            <button className="cert-edit-btn" onClick={(e) => { e.stopPropagation(); setEditingCert(c); setPage("camera"); }}>✏️</button>
+                            {c.uid === user.uid && <button className="cert-edit-btn" onClick={(e) => { e.stopPropagation(); setEditingCert(c); setPage("camera"); }}>✏️</button>}
                             <button className="cert-delete-btn" onClick={(e) => { e.stopPropagation(); handleDeleteCert(c); }}>✕</button>
                           </>
                         )}
