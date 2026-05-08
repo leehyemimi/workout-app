@@ -378,9 +378,17 @@ function Main({ user }) {
     return () => unsub();
   }, []);
 
-  // 선택된 주 인증 실시간 구독
+  // 선택된 주 인증 실시간 구독 (날짜 범위 기준)
   useEffect(() => {
-    const q = query(collection(db, "certifications"), where("week", "==", weekId));
+    const start = new Date(weekDates[0]);
+    start.setHours(0, 0, 0, 0);
+    const end = new Date(weekDates[6]);
+    end.setHours(23, 59, 59, 999);
+    const q = query(
+      collection(db, "certifications"),
+      where("createdAt", ">=", start),
+      where("createdAt", "<=", end)
+    );
     const unsub = onSnapshot(q, (snap) => {
       setCertifications(snap.docs.map((d) => ({ id: d.id, ...d.data() })));
     });
